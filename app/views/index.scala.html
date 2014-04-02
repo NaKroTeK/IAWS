@@ -1,0 +1,31 @@
+@(transports: List[Transport], transportForm: Form[Transport])
+
+@import helper._
+
+@main("Transport publique") {
+    
+    <h1>Bienvenue sur l'application des transports publique</h1>
+    
+    <ul>
+            <li>                
+                @form(routes.Application.nextTransport()) {
+                    <input type="submit" value="Prochain passage">
+                }
+            </li>
+            <li>                
+                @form(routes.Application.nextTransport()) {
+                    <input type="submit" value="Noter une ligne">
+                }
+            </li>
+            <li>                
+                @form(routes.Application.nextTransport()) {
+                    <input type="submit" value="Choisir un itinéraire">
+                }
+            </li>
+            <li>                
+                @form(routes.Application.nextTransport()) {
+                    <input type="submit" value="Trouver un vélo">
+                }
+            </li>
+    
+}
