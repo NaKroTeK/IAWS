@@ -7,7 +7,8 @@ GET     /                           controllers.Application.index()
 
 # Transport page
 GET     /transports                 controllers.Application.transports()
-GET		/transports					controllers.Application.nextTransport()
+GET		/transports/list			controllers.Application.listTransports()
+GET		/transports/list2			controllers.Application.listTransports2()
 POST    /transports                 controllers.Application.newTransport()
 POST    /transports/:id/delete      controllers.Application.deleteTransport(id: Long)
 

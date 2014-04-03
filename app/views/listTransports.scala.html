@@ -2,14 +2,14 @@
 
 @import helper._
 
-@main("Todo list") {
+@main("Prochain passage") {
     
     <h1>@transports.size() transport(s)</h1>
     
     <ul>
         @for(transport <- transports) {
             <li>
-                @transport.label
+                @transport.label @form(routes.Application.listTransports()) { <input type="submit" value="sélectionner"> }
             </li>
         }
     </ul>
