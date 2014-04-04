@@ -16,6 +16,8 @@ public class Transport extends Model {
 	
 	@Required
 	public String label;
+	
+	public int nbLike;
 
 	public static Finder<Long,Transport> find = new Finder(
 			Long.class, Transport.class

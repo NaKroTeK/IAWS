@@ -22,9 +22,8 @@ public class Application extends Controller {
 	static final String TISSEO_KEY = "a03561f2fd10641d96fb8188d209414d8";
 	static final String NAME_API_TISSEO = "linesList";
 	static final String PARAM_API_TISSEO = "format=json";
-	static final String MASTER_KEY = System.getenv("MASTER_KEY");
 
-	static final String JC_DECAUX_URL = "https://api.jcdecaux.com/vls/v1/stations?contract=toulouse&apiKey=" + JC_DECAUX_KEY;
+	static final String JC_DECAUX_URL = "https://api.jcdecaux.com/vls/v1/stations?contract=toulouse&";
 	static final String TISSEO_URL = "http://pt.data.tisseo.fr/" + NAME_API_TISSEO + "?" + PARAM_API_TISSEO + "&key=" + TISSEO_KEY;
 
 	static Form<Transport> transportForm = Form.form(Transport.class);
@@ -62,12 +61,12 @@ public class Application extends Controller {
 
 	public static Promise<Result> listTransports2() {
 		WSRequestHolder request = WS.url(JC_DECAUX_URL);
-		request.setAuth(JC_DECAUX_KEY, MASTER_KEY);
+		request.setQueryParameter("apiKey", JC_DECAUX_KEY);
 		
 		final Promise<Result> resultPromise = request.get().map(
 				new Function<WS.Response, Result>() {
 					public Result apply(WS.Response response) {
-						return ok("Hello " + response.asJson());
+						return ok(response.asJson());
 					}
 				});
 
