@@ -1,5 +1,9 @@
 package controllers;
 
+import java.util.Iterator;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import models.Transport;
@@ -23,8 +27,8 @@ public class Application extends Controller {
 	static final String NAME_API_TISSEO = "linesList";
 	static final String PARAM_API_TISSEO = "format=json";
 
-	static final String JC_DECAUX_URL = "https://api.jcdecaux.com/vls/v1/stations?contract=toulouse&";
-	static final String TISSEO_URL = "http://pt.data.tisseo.fr/" + NAME_API_TISSEO + "?" + PARAM_API_TISSEO + "&key=" + TISSEO_KEY;
+	static final String JC_DECAUX_URL = "https://api.jcdecaux.com/vls/v1/stations?";
+	static final String TISSEO_URL = "http://pt.data.tisseo.fr/" + NAME_API_TISSEO + "?";
 
 	static Form<Transport> transportForm = Form.form(Transport.class);
 	static Form<Transport> listTransportsForm = Form.form(Transport.class);
@@ -55,25 +59,69 @@ public class Application extends Controller {
 		return redirect(routes.Application.transports());
 	}
 
-	public static Result listTransports() {
-		return ok(views.html.listTransports.render(Transport.all(), listTransportsForm));
+	public static Result defaultTransports() {
+//		return ok(views.html.listTransports.render(Transport.all(), transportForm));
+		return TODO;
 	}
 
-	public static Promise<Result> listTransports2() {
+	public static Promise<Result> listTransports() {
+		WSRequestHolder request = WS.url(TISSEO_URL);
+		request.setQueryParameter("format", "json");
+		request.setQueryParameter("key", TISSEO_KEY);
+		
+		final Promise<Result> resultPromise = request.get().map(
+				new Function<WS.Response, Result>() {
+					public Result apply(WS.Response response) {
+						
+//						return ok(response.asJson());
+						
+						return ok(views.html.listTransports.render(response.asJson().findValuesAsText("shortName"), transportForm));
+					}
+				});
+		
+		return resultPromise;
+	}
+	
+	public static Promise<Result> listStationsVelos() {
 		WSRequestHolder request = WS.url(JC_DECAUX_URL);
+		request.setQueryParameter("contract", "toulouse");
 		request.setQueryParameter("apiKey", JC_DECAUX_KEY);
 		
 		final Promise<Result> resultPromise = request.get().map(
 				new Function<WS.Response, Result>() {
 					public Result apply(WS.Response response) {
-						return ok(response.asJson());
+						List<String> listVelo = response.asJson().findValuesAsText("name");
+						
+						return ok(views.html.listStationsVelos.render(listVelo, transportForm));
 					}
 				});
 
 		return resultPromise;
+	}
+	
+	public static Promise<Result> veloDisponible(final String nom) {
+		WSRequestHolder request = WS.url(JC_DECAUX_URL);
+		request.setQueryParameter("contract", "toulouse");
+		request.setQueryParameter("apiKey", JC_DECAUX_KEY);
+		
+		final Promise<Result> resultPromise = request.get().map(
+				new Function<WS.Response, Result>() {
+					public Result apply(WS.Response response) {
+						Iterator<JsonNode> it = response.asJson().elements();
+						JsonNode json;
+						
+						while (it.hasNext()) {
+							json = it.next();
+							if ((json.findValue("name").asText().compareTo(nom)) == 0) {
+								String nbVelo = json.findValue("available_bikes").toString();
+								return ok(views.html.veloDisponible.render(nbVelo, nom, transportForm));
+							}
+						}
+						return ok("erreur");
+					}
+				});
 
-
-		//return ok(views.html.listTransports.render(Transport.all(), listTransportsForm));
+		return resultPromise;
 	}
 
 }

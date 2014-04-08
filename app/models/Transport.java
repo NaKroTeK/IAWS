@@ -22,6 +22,11 @@ public class Transport extends Model {
 	public static Finder<Long,Transport> find = new Finder(
 			Long.class, Transport.class
 			);
+	
+	public Transport(Long id, String lab) {
+		this.id = id;
+		this.label = lab;
+	}
 
 	public static List<Transport> all() {
 		return find.all();

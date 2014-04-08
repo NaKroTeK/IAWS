@@ -4,12 +4,12 @@
 
 @main("Prochain passage") {
     
-    <h1>Il y a @transports.size() transport(s)</h1>
+    <h1>Il y a @transports.size() stations de vélos</h1>
     
     <ul>
         @for(transport <- transports) {
             <li>
-                @transport @form(routes.Application.defaultTransports()) { <input type="submit" value="sélectionner"> }
+                @transport @form(routes.Application.veloDisponible(transport)) { <input type="submit" value="sélectionner"> }
             </li>
         }
     </ul>

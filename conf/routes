@@ -3,14 +3,17 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
+GET     /                           				controllers.Application.index()
 
 # Transport page
-GET     /transports                 controllers.Application.transports()
-GET		/transports/list			controllers.Application.listTransports()
-GET		/transports/list2			controllers.Application.listTransports2()
-POST    /transports                 controllers.Application.newTransport()
-POST    /transports/:id/delete      controllers.Application.deleteTransport(id: Long)
+GET     /transports                 				controllers.Application.transports()
+GET		/transports/list							controllers.Application.defaultTransports()
+GET		/transports/listTransports					controllers.Application.listTransports()
+GET		/transports/listStationsVelos				controllers.Application.listStationsVelos()
+
+POST	/transports/listStationsVelos/:nom			controllers.Application.veloDisponible(nom : String)
+POST    /transports                					controllers.Application.newTransport()
+POST    /transports/:id/delete     					controllers.Application.deleteTransport(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

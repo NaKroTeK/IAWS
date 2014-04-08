@@ -6,6 +6,7 @@
 create table transport (
   id                        bigint not null,
   label                     varchar(255),
+  nb_like                   integer,
   constraint pk_transport primary key (id))
 ;
 
