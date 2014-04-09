@@ -9,7 +9,7 @@
     <ul>
         @for(transport <- transports) {
             <li>
-                @transport @form(routes.Application.defaultTransports()) { <input type="submit" value="sélectionner"> }
+                @transport @form(routes.Application.prochainPassage(transport)) { <input type="submit" value="sélectionner"> }
             </li>
         }
     </ul>

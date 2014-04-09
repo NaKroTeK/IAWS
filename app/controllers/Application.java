@@ -82,6 +82,24 @@ public class Application extends Controller {
 		return resultPromise;
 	}
 	
+	public static Promise<Result> prochainPassage(String nom) {
+		WSRequestHolder request = WS.url(TISSEO_URL);
+		request.setQueryParameter("format", "json");
+		request.setQueryParameter("key", TISSEO_KEY);
+		
+		final Promise<Result> resultPromise = request.get().map(
+				new Function<WS.Response, Result>() {
+					public Result apply(WS.Response response) {
+						
+//						return ok(response.asJson());
+						
+						return ok(views.html.listTransports.render(response.asJson().findValuesAsText("shortName"), transportForm));
+					}
+				});
+		
+		return resultPromise;
+	}
+	
 	public static Promise<Result> listStationsVelos() {
 		WSRequestHolder request = WS.url(JC_DECAUX_URL);
 		request.setQueryParameter("contract", "toulouse");

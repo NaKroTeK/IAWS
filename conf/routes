@@ -11,6 +11,7 @@ GET		/transports/list							controllers.Application.defaultTransports()
 GET		/transports/listTransports					controllers.Application.listTransports()
 GET		/transports/listStationsVelos				controllers.Application.listStationsVelos()
 
+POST	/transports/listTransports/:nom				controllers.Application.prochainPassage(nom : String)
 POST	/transports/listStationsVelos/:nom			controllers.Application.veloDisponible(nom : String)
 POST    /transports                					controllers.Application.newTransport()
 POST    /transports/:id/delete     					controllers.Application.deleteTransport(id: Long)

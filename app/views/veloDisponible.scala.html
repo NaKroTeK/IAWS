@@ -1,0 +1,23 @@
+@(nbVelo: String, nom: String, transportForm: Form[Transport])
+
+@import helper._
+
+@main("Prochain passage") {
+    
+    <h1>Station @nom</h1>
+    
+    <ul>
+            <li>
+                Il y a  @nbVelo vélo(s) disponible(s)
+            </li>
+    </ul>
+    
+    @form(routes.Application.listStationsVelos()) {
+        <input type="submit" value="Retour à liste des stations">
+    }
+    
+    @form(routes.Application.transports()) {
+        <input type="submit" value="Retour à l'accueil">
+    }
+    
+}
